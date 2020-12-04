@@ -6,7 +6,7 @@
 #include <map>
 using namespace std;
 
-//#define DEBUG
+#define DEBUG
 
 
 //It would be clearer if named capture groups were available in ECMAScript standard
@@ -77,7 +77,7 @@ void read_input(string const& filename, vector<string>& v) {
 int main() {
     vector<string> passports;
     map<int,regex> rules; //Contains the field rules at the capturing group index
-    read_input("day4.in",passports);
+    read_input("day4_giammy_unix.in",passports);
     initialize_rules(rules);
     #ifdef DEBUG
     int x = accumulate(passports.begin(), passports.end(), 0, [](int count, string s){
