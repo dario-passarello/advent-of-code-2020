@@ -13,3 +13,9 @@ My submissions for AoC2020. My goal is to implement all problems in C++. Sometim
     * C++ Alternative implementation with bitwise operators
 * Day4 :star: :star:
     * C++ Implementation
+* Day5 :star: :star:
+    * C++ Implementation
+* Day6 :star: :star:
+    * C++ Implementation
+* Day7 :star: :star:
+    * C++ Implementation
