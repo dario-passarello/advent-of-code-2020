@@ -15,12 +15,13 @@ struct pwdMatch{
     char sel_char;
     string password;
 
-    pwdMatch(string line);
+    pwdMatch(string& line);
 };
 
-pwdMatch::pwdMatch(string line) {
-
     regex reg("(\\d+)-(\\d+) ([a-z]): ([a-z]+)");
+
+pwdMatch::pwdMatch(string& line) {
+
     smatch first_match = *sregex_iterator(line.begin(), line.end(), reg);
     //Parse capture groups
     num1 = stoi(first_match[1].str());

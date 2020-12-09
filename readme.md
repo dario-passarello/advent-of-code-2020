@@ -2,6 +2,7 @@
 
 My submissions for AoC2020. My goal is to implement all problems in C++. Sometimes if I don't have a lot of time i will implement a quick solution in python first and then i will re-implement it in C++ later.
 
+
 * Day1 :star: :star:
     * Haskell Quick implementation
     * C++ Implementation
@@ -18,4 +19,9 @@ My submissions for AoC2020. My goal is to implement all problems in C++. Sometim
 * Day6 :star: :star:
     * C++ Implementation
 * Day7 :star: :star:
+    * C++ Implementation
+    * C++ Implementation without regex (up to 50% time boost)
+* Day8: :star: :star:
+    * C++ Implementation using the Bootcode processor implementation
+* Day9: :star: :star:
     * C++ Implementation

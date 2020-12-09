@@ -1,20 +1,30 @@
 #include <string>
+#include<sstream>
 #include <fstream>
 #include <iostream>
-#include <regex>
 #include <numeric>
 #include <map>
 #include <set>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
 #define DEBUG
 
-//Match in capture group 1 the container's color
-regex matcher(R"%((\w+ \w+) (\w+ \w+) (((\d) (\w+ \w+) bags?,? ?)+|no other bags)\.)%");
 
-//Matches in capture group 1 the number of contained bags
-//Matches in capture group 2 the container's color
-regex single_bag_match(R"%((\d) (\w+ \w+) bags?,? ?)%");
+
+vector<string> split (const string &s, char delim) {
+    vector<string> result;
+    stringstream ss (s);
+    string item;
+
+    while (getline (ss, item, delim)) {
+        result.push_back (item);
+    }
+
+    return result;
+}
+
 
 struct bag {
     string color;
@@ -45,8 +55,8 @@ void read_input(string const& filename, vector<string>& v) {
 }
 
 pair<string, bag> parse_rule_bags(string rule) {
-    smatch first_match = *sregex_iterator(rule.begin(), rule.end(), matcher);
-    string bag_color = first_match[1];
+    vector<string> rule_tokens = split(rule, ' ');
+    string bag_color = rule_tokens[0] + ' ' + rule_tokens[1];
     bag new_bag = *new bag(bag_color);
     return make_pair(bag_color, new_bag);
 }
@@ -54,15 +64,20 @@ pair<string, bag> parse_rule_bags(string rule) {
 
 void create_DAG(vector<string>& rules, map<string, bag>& nodes) {
     for(string& rule : rules) { //Iterates all rules
-        smatch first_match = *sregex_iterator(rule.begin(), rule.end(), matcher);
-        string container_color = first_match[1].str();
+        vector<string> rule_tokens = split(rule, ' ');
+        if(rule_tokens.size() == 7) { //Only rules that contain no other bag have length 7
+            continue;
+        }
+        string container_color = rule_tokens[0] + ' ' + rule_tokens[1]; //First two words in rule are the color for which this rule applies
         bag& container = nodes.at(container_color);
-        auto cont_end = sregex_iterator();
         //Match all contained
-        for(auto cont_it = sregex_iterator(rule.begin(), rule.end(), single_bag_match); cont_it != cont_end; ++cont_it) {
-            smatch contained_match = *cont_it;
-            int qty = stoi(contained_match[1].str());
-            string contained_color = contained_match[2].str();
+        //If there are N contained bag for i = 0..N-1
+        //position 4 + N*4 -> Number of bags contained
+        //position 4 + (N*4) + 1 -> Color adjective
+        //position 4 + (N*4) + 2 -> Color Noun
+        for(unsigned int pos = 4; pos < rule_tokens.size(); pos += 4) {
+            int qty = stoi(rule_tokens[pos]);
+            string contained_color = rule_tokens[pos + 1] + ' ' + rule_tokens[pos + 2];
             bag& contained = nodes.at(contained_color);
             container.add_sub_bag(contained, qty); //Create new "bidirectional" edge
         }
